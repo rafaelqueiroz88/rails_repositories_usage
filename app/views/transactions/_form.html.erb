@@ -1,0 +1,29 @@
+<%= form_with(model: transaction) do |form| %>
+  <% if transaction.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+        <% transaction.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    User: <%= form.collection_select :user_id, @users, :id, :name %>
+  </div>
+
+  <br />
+
+  <div>
+    Product: <%= form.collection_select :product_id, @products, :id, :name %>
+  </div>
+
+  <br />
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
