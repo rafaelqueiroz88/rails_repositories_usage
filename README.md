@@ -116,3 +116,34 @@ Feito isso, em seu navegador, digite:
 http://localhost:3000/
 ```
 
+## Interpretando o código
+
+Ao abrir o diretório **app**, percebemos que um dos sub diretórios é chamado de **repositories**. Podemos criar novos sub diretórios aqui e implementar módulos se necessário, porém não é tão comum uma vez que podemos criar repositórios baseados em tarefas e comportamentos invés de modelos ou entidades. A forma como esta camada vai crescer fica a critério da equipe.
+
+O que importa é organizar de forma que se torne facil a compreensão.
+
+Neste projeto podemos encontrar um repositório para a entidade **Notification**. E dentro encontraremos um unico comportamento.
+
+```
+def create_notification_for_whole_users(message, user_buyer, user_vendor)
+
+  Notification.create({ message: message, user_id: user_buyer })
+  Notification.create({ message: message, user_id: user_vendor })
+end
+```
+
+Assim como descrito acima, uma possibilidade para um repositório seria armazenar consultas compostas ou grupos de consultas que precisam coexistir para que uma informação esteja completa.
+
+Neste caso estamos dizendo que ao criar uma transação, devemos vincular um produto a um usuário em um processo de compra. 
+
+Evidentemente este processo está incompleto, pois não abrange uma lista de compras, e sim um único produto. Mas vamos nos atentar e imaginar que estamos criando uma compra e que o funcionário que vai conduzir a compra está vinculando um cliente a um produto.
+
+Quando ele envia a requisição de compra, o método **create** de **transactions_controller** deverá receber essa informação e, ao verificar que tudo deu certo, ele deveria criar respectivamente duas notificações. Uma para os administradores do sistema e outra para o cliente.
+
+Se qualquer outro procedimento pós venda deva acontecer, este método poderia executa-lo, desde que este estivesse ligado a uma regra de negócio ou consultas do banco de dados, ou ainda que de alguma forma este comportamento faça sentido estar aqui.
+
+### Implementando exemplos da realidade
+
+Um pequeno exemplo disso, seria criar uma notificação para um setor de expedição, para que ao receber a notificação, o produto fosse separado manualmente.
+
+Para testar, basta acessar a página das transações e criar uma nova.

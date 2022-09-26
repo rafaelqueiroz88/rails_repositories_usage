@@ -29,7 +29,8 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       if @transaction.save
         user_buyer = transaction_params[:user_id]
-        create_notification_for_whole_users("#{User.find(user_buyer).name} just pick a product from ADMIN", user_buyer, 1)
+        message = "#{User.find(user_buyer).name} just pick a #{Product.find(transaction_params[:product_id]).name} from ADMIN"
+        create_notification_for_whole_users(message, user_buyer, User.first.id)
         format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully created." }
         format.json { render :show, status: :created, location: @transaction }
       else
