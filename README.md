@@ -116,32 +116,3 @@ Feito isso, em seu navegador, digite:
 http://localhost:3000/
 ```
 
-## Interpretando o Projeto
-
-Para entender o que acontece, será necessário observar o nosso arquivo **seeds.rb** disponível no diretório: db/.
-
-Ao observamos este arquivo, vamos perceber que são criados 2 carros (Car), com a cor (Color) "White".
-
-Ao abrir o nosso Concern **Filterable** que se localiza em **controllers/concerns**, vamos observar que existe uma função chamada: **filter_by_color**.
-
-```
-def filter_by_color
-  Car.where.not(color: 'White')
-end
-```
-
-Esta função é responsável por filtrar todos os carros pela cor branca.
-
-Este exemplo nos mostra como é possível criar funções que podem ser chamadas em diferentes lugares. Basta fazer o include deste Concern.
-
-Existe também um outro de nome **Validatable**, porém este se localiza em **models/concerns**.
-
-É nítido que ambos trabalham de formas diferentes, pois aqui não temos nenhum comportamento. A unica coisa que temos é uma inclusão que faz a validação da presença de nomes e documentos.
-
-```
-included do
-  validates :name, :document, presence: true
-end
-```
-
-Apenas por incluir este Concern a um model, será necessário enviar nomes e documentos no momento de se instanciar esta entidade, do contrário um erro informando a ausência destes deverá aparecer em tela.
